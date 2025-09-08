@@ -1,0 +1,21 @@
+<h2>User Page</h2>
+<h3>Danh sách sản phẩm</h3>
+
+<table class="product-table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Tên sản phẩm</th>
+      <th>Giá (USD)</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (p of products; track p.id) {
+      <tr>
+        <td>{{ p.id }}</td>
+        <td>{{ p.name }}</td>
+        <td>{{ p.price | currency:'VND':'symbol':'1.0-0' }}</td>
+      </tr>
+    }
+  </tbody>
+</table>
