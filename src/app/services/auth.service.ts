@@ -15,12 +15,20 @@ export class AuthService {
 
   private currentUser: User | null = null;
 
+  constructor() {
+    const storedUser = localStorage.getItem('currentUser');
+    if (storedUser) {
+      this.currentUser = JSON.parse(storedUser);
+    }
+  }
+
   login(username: string, password: string): boolean {
     const foundUser = this.users.find(
       u => u.username === username && u.password === password
     );
     if (foundUser) {
       this.currentUser = foundUser;
+      localStorage.setItem('currentUser', JSON.stringify(foundUser)); 
       return true;
     }
     return false;
@@ -28,6 +36,7 @@ export class AuthService {
 
   logout() {
     this.currentUser = null;
+    localStorage.removeItem('currentUser'); 
   }
 
   getIsLoggedIn(): boolean {
