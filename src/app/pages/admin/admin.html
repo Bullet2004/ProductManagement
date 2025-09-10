@@ -1,8 +1,57 @@
 <div class="user-header">
-  <h2>User Page</h2>
+  <h2>Admin Page</h2>
   <button class="logout-btn" (click)="logout()">Logout</button>
 </div>
 
-  <h2>Admin Page</h2>
-    <p>Xin chào, {{auth.getCurrentUser()?.username}}</p>
-    <p>Chỉ admin mới thấy trang này!</p>
+<p>Xin chào, {{ auth.getCurrentUser()?.username }}</p>
+
+
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h3>Danh sách sản phẩm</h3>
+    <button class="add-btn" (click)="openAddModal()">Thêm sản phẩm</button>
+</div>
+
+  <table class="product-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Tên sản phẩm</th>
+        <th>Giá (VND)</th>
+        <th>Cập nhật</th>
+        <th>Xoá</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (p of products; track p.id) {
+        <tr>
+          <td>{{ p.id }}</td>
+          <td>{{ p.name }}</td>
+          <td>{{ p.price | currency:'VND':'symbol':'1.0-0' }}</td>
+          <td><button class="edit-btn" (click)="openEditModal(p)">Sửa</button></td>
+          <td><button class="delete-btn" (click)="deleteProduct(p.id)">Xoá</button></td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+@if (showModal) {
+  <div class="modal-overlay">
+    <div class="modal">
+      <h3>{{ editMode ? 'Cập nhật sản phẩm' : 'Thêm sản phẩm' }}</h3>
+      <form (ngSubmit)="saveProduct()">
+        <label>
+          Tên sản phẩm:
+          <input type="text" [(ngModel)]="modalProduct.name" name="name" required />
+        </label>
+        <label>
+          Giá (VND):
+          <input type="number" [(ngModel)]="modalProduct.price" name="price" required />
+        </label>
+        <div class="modal-actions">
+          <button type="submit">{{ editMode ? 'Lưu' : 'Thêm' }}</button>
+          <button type="button" (click)="closeModal()">Hủy</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
